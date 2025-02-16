@@ -1,16 +1,17 @@
 package main
 
 import (
-	"io"
-	"log"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
-	helloHandler := func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, "Hello, world!\n")
-	}
-	http.HandleFunc("/hello", helloHandler)
-	log.Println("server start at port 8085")
-	log.Fatal(http.ListenAndServe(":8085", nil))
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("welcome"))
+	})
+	http.ListenAndServe(":8085", r)
 }
