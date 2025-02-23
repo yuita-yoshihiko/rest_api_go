@@ -1,0 +1,10 @@
+services:
+  db-test-local:
+    container_name: 'test-postgres'
+    image: postgres:14.5-alpine
+    environment:
+      - POSTGRES_USER=rest-api-go-user
+      - POSTGRES_DB=rest-api-go-db-test
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5733:5432

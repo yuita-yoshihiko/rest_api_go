@@ -1,0 +1,11 @@
+development:
+  dialect: postgres
+  datasource: host=docker-postgres dbname=rest-api-go-db user=user password=password sslmode=disable
+  dir: infrastructure/db/migrations
+  table: gorp_migrations
+
+test:
+  dialect: postgres
+  datasource: host=host.docker.internal dbname=rest-api-go-db-test user=rest-api-go-user password=password port=5733 sslmode=disable
+  dir: infrastructure/db/migrations
+  table: gorp_migrations
