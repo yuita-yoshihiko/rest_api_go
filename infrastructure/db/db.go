@@ -1,14 +1,13 @@
 package db
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"os"
+	"rest_api_go/models"
 	"time"
 
 	"github.com/lib/pq"
-	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 var DB *sql.DB
@@ -16,16 +15,20 @@ var txKey = struct{}{}
 
 type (
 	DBAdministrator interface {
-		GetDao(ctx context.Context) boil.ContextExecutor
 		Error(err error) error
+		Queries() *models.Queries
 	}
 	dbutils struct {
-		db *sql.DB
+		db      *sql.DB
+		queries *models.Queries
 	}
 )
 
 func NewDBAdministrator(db *sql.DB) DBAdministrator {
-	return &dbutils{db: db}
+	return &dbutils{
+		db:      db,
+		queries: models.New(db),
+	}
 }
 
 func Init() {
@@ -49,33 +52,6 @@ func Init() {
 	DB.SetMaxIdleConns(10)
 	DB.SetMaxOpenConns(10)
 	DB.SetConnMaxLifetime(300 * time.Second)
-
-	boil.SetDB(DB)
-}
-
-func DoInTx(ctx context.Context, f func(context.Context) (interface{}, error)) (interface{}, error) {
-	tx, err := boil.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-	ctx = context.WithValue(ctx, txKey, tx)
-	v, err := f(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-	return v, nil
-}
-
-func (d *dbutils) GetDao(ctx context.Context) boil.ContextExecutor {
-	tx, ok := ctx.Value(txKey).(*sql.Tx)
-	if ok {
-		return tx
-	}
-	return d.db
 }
 
 func (d *dbutils) Error(err error) error {
@@ -83,4 +59,8 @@ func (d *dbutils) Error(err error) error {
 		return nil
 	}
 	return err
+}
+
+func (d *dbutils) Queries() *models.Queries {
+	return d.queries
 }
