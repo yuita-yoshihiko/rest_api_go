@@ -16,7 +16,7 @@ services:
     <<: *service
     working_dir: /rest-api-go
     tty: true
-    command: air -c .air.toml
+    command: go tool air -c .air.toml
     expose:
       - '8089'
     ports:
