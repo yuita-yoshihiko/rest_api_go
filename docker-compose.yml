@@ -18,9 +18,9 @@ services:
     tty: true
     command: air -c .air.toml
     expose:
-      - '8080'
+      - '8089'
     ports:
-      - '8089:8080'
+      - '8089:8089'
 
   postgresql:
     container_name: 'rest-api-go-postgres'
