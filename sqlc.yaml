@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    schema: "./infrastructure/db/migrations/"
+    queries: "./infrastructure/db/query/"
+    gen:
+      go:
+        package: "models"
+        out: "./models"
+        emit_json_tags: true
+
