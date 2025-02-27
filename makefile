@@ -12,6 +12,9 @@ migration/up:
 migration/down:
 	${RUN} sh -c "sql-migrate down --env='development'"
 
+sqlc:
+	${RUN} go tool sqlc generate
+
 psql:
 	psql -h 127.0.0.1 -p 5732 -U user rest-api-go-db
 
