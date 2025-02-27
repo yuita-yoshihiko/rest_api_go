@@ -5,6 +5,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -18,8 +19,9 @@ type Post struct {
 }
 
 type User struct {
-	ID        int64     `json:"id"`
-	Name      string    `json:"name"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        int64          `json:"id"`
+	Name      string         `json:"name"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	Email     sql.NullString `json:"email"`
 }
