@@ -6,7 +6,6 @@ COPY go.sum .
 
 RUN apk add --no-cache git alpine-sdk
 RUN set -x \
-    && go mod download \
-    && go install github.com/rubenv/sql-migrate/...@latest
+    && go mod download
 
 COPY . .
