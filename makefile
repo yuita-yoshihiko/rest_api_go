@@ -4,13 +4,13 @@ migrate/new:
 	${RUN} sh -c "sql-migrate new ${FILE_NAME}"
 
 migration/status:
-	${RUN} sh -c "sql-migrate status --env='development'"
+	${RUN} go tool sql-migrate status --env='development'
 
 migration/up:
-	${RUN} sh -c "sql-migrate up --env='development'"
+	${RUN} go tool sql-migrate up --env='development'
 
 migration/down:
-	${RUN} sh -c "sql-migrate down --env='development'"
+	${RUN} go tool sql-migrate down --env='development'
 
 sqlc:
 	${RUN} go tool sqlc generate
